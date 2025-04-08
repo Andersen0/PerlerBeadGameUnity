@@ -8,8 +8,7 @@ public class PerlerColorChanger : MonoBehaviour
     public Slider greenSlider;
     public Slider blueSlider;
 
-    public GameObject perlerModel; // Assign the lowVertixPerler GameObject in the inspector
-    private Renderer modelRenderer;
+    public static Color SelectedColor = Color.white;
 
     void Start()
     {
@@ -27,30 +26,19 @@ public class PerlerColorChanger : MonoBehaviour
         greenSlider.wholeNumbers = true;
         blueSlider.wholeNumbers = true;
 
-        modelRenderer = perlerModel.GetComponent<Renderer>();
-        if (modelRenderer == null)
-        {
-            modelRenderer = perlerModel.GetComponentInChildren<Renderer>();
-        }
+        redSlider.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
+        greenSlider.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
+        blueSlider.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
 
-        // Subscribe to slider value changes
-        redSlider.onValueChanged.AddListener(delegate { UpdateModelColor(); });
-        greenSlider.onValueChanged.AddListener(delegate { UpdateModelColor(); });
-        blueSlider.onValueChanged.AddListener(delegate { UpdateModelColor(); });
-
-        UpdateModelColor(); // Set initial color
+        UpdateSelectedColor(); // Set initial color
     }
 
-    void UpdateModelColor()
+    void UpdateSelectedColor()
     {
-        if (modelRenderer != null)
-        {
-            float r = redSlider.value / 255f;
-            float g = greenSlider.value / 255f;
-            float b = blueSlider.value / 255f;
+        float r = redSlider.value / 255f;
+        float g = greenSlider.value / 255f;
+        float b = blueSlider.value / 255f;
 
-            Color newColor = new Color(r, g, b);
-            modelRenderer.material.color = newColor;
-        }
+        SelectedColor = new Color(r, g, b);
     }
 }
