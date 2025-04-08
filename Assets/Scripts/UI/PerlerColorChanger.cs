@@ -13,6 +13,11 @@ public class PerlerColorChanger : MonoBehaviour
 
     void Start()
     {
+
+        redSlider = GameObject.Find("redSlider").GetComponent<Slider>();
+        greenSlider = GameObject.Find("greenSlider").GetComponent<Slider>();
+        blueSlider = GameObject.Find("blueSlider").GetComponent<Slider>();
+
         // Changes the max value of the slider to 20;
         redSlider.maxValue = 255;
         greenSlider.maxValue = 255;

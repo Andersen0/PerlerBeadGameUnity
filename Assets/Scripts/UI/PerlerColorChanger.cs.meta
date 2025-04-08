@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 5fd00c644fe59f34bbd835666f100863
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - redSlider: {instanceID: 0}
+  - greenSlider: {instanceID: 0}
+  - blueSlider: {instanceID: 0}
+  - perlerModel: {fileID: 919132149155446097, guid: 95b49c0692597bf4f801fdcdcb5c1a7d, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
