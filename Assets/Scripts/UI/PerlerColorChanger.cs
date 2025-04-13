@@ -4,6 +4,8 @@ using UnityEngine.UI; // Required when Using UI elements.
 
 public class PerlerColorChanger : MonoBehaviour
 {
+    public GameObject sliderPrefab;
+
     public Slider redSliderInfo;
     public Slider greenSliderInfo;
     public Slider blueSliderInfo;
@@ -12,6 +14,14 @@ public class PerlerColorChanger : MonoBehaviour
 
     void Start()
     {
+        sliderPrefab = Resources.Load<GameObject>("sliderPrefab");
+
+        if (sliderPrefab == null)
+        {
+            Debug.LogError("Slider prefab not found in Resources folder!");
+            return;
+        }
+
         // UI Canvas
         GameObject canvasUI = new GameObject("UICanvas", typeof(Canvas));
         Canvas canvas = canvasUI.GetComponent<Canvas>();
@@ -25,7 +35,8 @@ public class PerlerColorChanger : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            GameObject newSlider = new GameObject(names[i] + "Slider", typeof(Slider), typeof(RectTransform));
+            GameObject newSlider = Instantiate(sliderPrefab, canvasUI.transform);
+            newSlider.name = names[i] + "Slider";
             newSlider.transform.SetParent(canvasUI.transform, false);
 
             RectTransform rt = newSlider.GetComponent<RectTransform>();
