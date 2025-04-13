@@ -13,7 +13,7 @@ public class PerlerColorChanger : MonoBehaviour
     void Start()
     {
         // UI Canvas
-        GameObject canvasUI = new GameObject("Canvas", typeof(Canvas));
+        GameObject canvasUI = new GameObject("UICanvas", typeof(Canvas));
         Canvas canvas = canvasUI.GetComponent<Canvas>();
 
         canvas.renderMode = RenderMode.ScreenSpaceOverlay; // HUD Placement
