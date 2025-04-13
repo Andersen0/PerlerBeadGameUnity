@@ -4,10 +4,10 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - redSlider: {instanceID: 0}
-  - greenSlider: {instanceID: 0}
-  - blueSlider: {instanceID: 0}
-  - perlerModel: {fileID: 919132149155446097, guid: 95b49c0692597bf4f801fdcdcb5c1a7d, type: 3}
+  - sliderPrefab: {fileID: 7477950620096790799, guid: 230b05d9470009240979a7553dcb7070, type: 3}
+  - redSliderInfo: {instanceID: 0}
+  - greenSliderInfo: {instanceID: 0}
+  - blueSliderInfo: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

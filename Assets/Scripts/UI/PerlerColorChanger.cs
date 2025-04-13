@@ -10,11 +10,17 @@ public class PerlerColorChanger : MonoBehaviour
     public Slider greenSliderInfo;
     public Slider blueSliderInfo;
 
-    public static Color SelectedColor = Color.white;
+    public Text redValueText;
+    public Text greenValueText;
+    public Text blueValueText;
 
+    public Image UICircleSprite; // Color preview UI element
+    public static Color SelectedColor = Color.white;
     void Start()
     {
-        sliderPrefab = Resources.Load<GameObject>("sliderPrefab");
+        Debug.Log("PerlerColorChanger script is running!");
+        sliderPrefab = Resources.Load<GameObject>("slider");
+        UICircleSprite = Resources.Load<Image>("UISprite");
 
         if (sliderPrefab == null)
         {
@@ -30,18 +36,18 @@ public class PerlerColorChanger : MonoBehaviour
         canvasUI.AddComponent<CanvasScaler>(); // resolution scaling
         canvasUI.AddComponent<GraphicRaycaster>(); // allows interaction
 
-        string[] names = { "red", "green", "blue" };
-        Slider[] sliders = new Slider[3];
+        string[] names = { "red", "green", "blue" }; 
+        Slider[] sliders = new Slider[3]; // to avoid duplicate code
 
         for (int i = 0; i < 3; i++)
         {
             GameObject newSlider = Instantiate(sliderPrefab, canvasUI.transform);
             newSlider.name = names[i] + "Slider";
-            newSlider.transform.SetParent(canvasUI.transform, false);
+            newSlider.transform.SetParent(canvasUI.transform, false); // might be redundant
 
             RectTransform rt = newSlider.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(200, 20);
-            rt.anchoredPosition = new Vector2(0, 40 - i * 40); // Stack vertically
+            rt.anchoredPosition = new Vector2(-600, 300 - (i*30) ); // Stack vertically
 
             Slider slider = newSlider.GetComponent<Slider>();
             slider.maxValue = 255;
@@ -49,8 +55,32 @@ public class PerlerColorChanger : MonoBehaviour
             slider.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
 
             sliders[i] = slider;
+
+
+            // Create a Text element for each slider value display
+            GameObject valueTextObject = new GameObject(names[i] + "ValueText", typeof(Text));
+            valueTextObject.transform.SetParent(canvasUI.transform, false);
+            Text valueText = valueTextObject.GetComponent<Text>();
+            valueText.text = "0"; // Initial value
+            valueText.fontSize = 14;
+            valueText.alignment = TextAnchor.MiddleLeft;
+            RectTransform textRect = valueTextObject.GetComponent<RectTransform>();
+            textRect.sizeDelta = new Vector2(100, 20);
+            textRect.anchoredPosition = new Vector2(-520, 40 - i * 40); // Align next to sliders
+
+
+            // Assign text references
+            if (i == 0) redValueText = valueText;
+            if (i == 1) greenValueText = valueText;
+            if (i == 2) blueValueText = valueText;
         }
 
+        // Instantiate the color preview from the prefab
+        GameObject colorPreviewObject = Instantiate(UICircleSprite.gameObject, canvasUI.transform);
+        UICircleSprite = colorPreviewObject.GetComponent<Image>();
+
+        UICircleSprite.rectTransform.sizeDelta = new Vector2(50, 50);
+        UICircleSprite.rectTransform.anchoredPosition = new Vector2(-450, 270);
 
         // Assign to public variables
         redSliderInfo = sliders[0];
@@ -68,5 +98,13 @@ public class PerlerColorChanger : MonoBehaviour
         float b = blueSliderInfo.value / 255f;
 
         SelectedColor = new Color(r, g, b);
+
+        // Update color preview
+        UICircleSprite.color = SelectedColor;
+
+        // Update the slider value labels
+        redValueText.text = Mathf.RoundToInt(redSliderInfo.value).ToString();
+        greenValueText.text = Mathf.RoundToInt(greenSliderInfo.value).ToString();
+        blueValueText.text = Mathf.RoundToInt(blueSliderInfo.value).ToString();
     }
 }
