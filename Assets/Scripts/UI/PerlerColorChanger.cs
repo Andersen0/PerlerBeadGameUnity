@@ -55,7 +55,7 @@ public class PerlerColorChanger : MonoBehaviour
 
             RectTransform rt = newSlider.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(200, 20);
-            rt.anchoredPosition = new Vector2(-600, 300 - (i*30) ); // Stack vertically
+            rt.anchoredPosition = new Vector2(-630, 300 - (i*30) ); // Stack vertically
 
             Slider slider = newSlider.GetComponent<Slider>();
             slider.maxValue = 255;
@@ -75,7 +75,7 @@ public class PerlerColorChanger : MonoBehaviour
             valueText.alignment = TextAnchor.MiddleLeft;
             RectTransform textRect = valueTextObject.GetComponent<RectTransform>();
             textRect.sizeDelta = new Vector2(100, 100);
-            textRect.anchoredPosition = new Vector2(-440, 300 - (i*30)); // Align next to sliders
+            textRect.anchoredPosition = new Vector2(-470, 300 - (i*30)); // Align next to sliders
 
 
             // Assign text references
@@ -89,7 +89,7 @@ public class PerlerColorChanger : MonoBehaviour
         UICircleSprite = colorPreviewObject.GetComponent<Image>();
 
         UICircleSprite.rectTransform.sizeDelta = new Vector2(50, 50);
-        UICircleSprite.rectTransform.anchoredPosition = new Vector2(-420, 270);
+        UICircleSprite.rectTransform.anchoredPosition = new Vector2(-450, 270);
 
         // Assign to public variables
         redSliderInfo = sliders[0];
