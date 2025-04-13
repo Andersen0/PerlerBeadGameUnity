@@ -16,6 +16,9 @@ public class PerlerColorChanger : MonoBehaviour
 
     public Image UICircleSprite; // Color preview UI element
     public static Color SelectedColor = Color.white;
+
+    public Font defaultFont;
+
     void Start()
     {
         Debug.Log("PerlerColorChanger script is running!");
@@ -39,6 +42,11 @@ public class PerlerColorChanger : MonoBehaviour
         string[] names = { "red", "green", "blue" }; 
         Slider[] sliders = new Slider[3]; // to avoid duplicate code
 
+        if (defaultFont == null)
+        {
+            defaultFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); // TODO: replace with better font
+        }
+
         for (int i = 0; i < 3; i++)
         {
             GameObject newSlider = Instantiate(sliderPrefab, canvasUI.transform);
@@ -61,12 +69,13 @@ public class PerlerColorChanger : MonoBehaviour
             GameObject valueTextObject = new GameObject(names[i] + "ValueText", typeof(Text));
             valueTextObject.transform.SetParent(canvasUI.transform, false);
             Text valueText = valueTextObject.GetComponent<Text>();
+            valueText.font = defaultFont;
             valueText.text = "0"; // Initial value
-            valueText.fontSize = 14;
+            valueText.fontSize = 20;
             valueText.alignment = TextAnchor.MiddleLeft;
             RectTransform textRect = valueTextObject.GetComponent<RectTransform>();
-            textRect.sizeDelta = new Vector2(100, 20);
-            textRect.anchoredPosition = new Vector2(-520, 40 - i * 40); // Align next to sliders
+            textRect.sizeDelta = new Vector2(100, 100);
+            textRect.anchoredPosition = new Vector2(-440, 300 - (i*30)); // Align next to sliders
 
 
             // Assign text references
@@ -80,7 +89,7 @@ public class PerlerColorChanger : MonoBehaviour
         UICircleSprite = colorPreviewObject.GetComponent<Image>();
 
         UICircleSprite.rectTransform.sizeDelta = new Vector2(50, 50);
-        UICircleSprite.rectTransform.anchoredPosition = new Vector2(-450, 270);
+        UICircleSprite.rectTransform.anchoredPosition = new Vector2(-420, 270);
 
         // Assign to public variables
         redSliderInfo = sliders[0];
