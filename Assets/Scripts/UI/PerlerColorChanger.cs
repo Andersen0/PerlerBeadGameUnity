@@ -15,54 +15,40 @@ public class PerlerColorChanger : MonoBehaviour
         // UI Canvas
         GameObject canvasUI = new GameObject("Canvas", typeof(Canvas));
         Canvas canvas = canvasUI.GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay; // HUD Placement
 
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay; // HUD Placement
         canvasUI.AddComponent<CanvasScaler>(); // resolution scaling
         canvasUI.AddComponent<GraphicRaycaster>(); // allows interaction
 
-        // Create the Slider GameObject
-        GameObject redSlider = new GameObject("Slider", typeof(Slider), typeof(RectTransform));
-        GameObject greenSlider = new GameObject("Slider", typeof(Slider), typeof(RectTransform));
-        GameObject blueSlider = new GameObject("Slider", typeof(Slider), typeof(RectTransform));
+        string[] names = { "red", "green", "blue" };
+        Slider[] sliders = new Slider[3];
 
-        redSlider.transform.SetParent(canvasUI.transform, false);
-        greenSlider.transform.SetParent(canvasUI.transform, false);
-        blueSlider.transform.SetParent(canvasUI.transform, false);
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject newSlider = new GameObject(names[i] + "Slider", typeof(Slider), typeof(RectTransform));
+            newSlider.transform.SetParent(canvasUI.transform, false);
 
-        // Set slider position/size (example)
-        RectTransform top = redSlider.GetComponent<RectTransform>();
-        RectTransform middle = greenSlider.GetComponent<RectTransform>();
-        RectTransform bottom = blueSlider.GetComponent<RectTransform>();
+            RectTransform rt = newSlider.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(200, 20);
+            rt.anchoredPosition = new Vector2(0, 40 - i * 40); // Stack vertically
 
-        top.sizeDelta = new Vector2(200, 20);
-        top.anchoredPosition = Vector2.zero;
+            Slider slider = newSlider.GetComponent<Slider>();
+            slider.maxValue = 255;
+            slider.wholeNumbers = true;
+            slider.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
 
-        middle.sizeDelta = new Vector2(180, 20);
-        middle.anchoredPosition = Vector2.zero;
-
-        bottom.sizeDelta = new Vector2(160, 20);
-        bottom.anchoredPosition = Vector2.zero;
+            sliders[i] = slider;
+        }
 
 
-        redSliderInfo = GameObject.Find("redSlider").GetComponent<Slider>();
-        greenSliderInfo = GameObject.Find("greenSlider").GetComponent<Slider>();
-        blueSliderInfo = GameObject.Find("blueSlider").GetComponent<Slider>();
-
-        // Changes the max value of the slider to 20;
-        redSliderInfo.maxValue = 255;
-        greenSliderInfo.maxValue = 255;
-        blueSliderInfo.maxValue = 255;
-
-        redSliderInfo.wholeNumbers = true;
-        greenSliderInfo.wholeNumbers = true;
-        blueSliderInfo.wholeNumbers = true;
-
-        redSliderInfo.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
-        greenSliderInfo.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
-        blueSliderInfo.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
+        // Assign to public variables
+        redSliderInfo = sliders[0];
+        greenSliderInfo = sliders[1];
+        blueSliderInfo = sliders[2];
 
         UpdateSelectedColor(); // Set initial color
     }
+
 
     void UpdateSelectedColor()
     {
