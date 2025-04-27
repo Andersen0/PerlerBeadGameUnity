@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class AutoBootstrapper : MonoBehaviour
+public static class AutoBootstrapper
 {
-    void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void Init()
     {
         Debug.Log("AutoBootstrapper running...");
 
