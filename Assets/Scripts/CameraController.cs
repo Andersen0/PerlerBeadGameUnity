@@ -36,11 +36,11 @@ public class CameraController : MonoBehaviour
         
         HandleMovementInput();
         HandleMouseInput();
-        ResetCamera();
+        // ResetCamera();
         
     }
 
-    void ResetCamera()
+    void ResetCamera() // BROKEN, resets to wrong position
     {
         if(Input.GetKey(KeyCode.O))
         {
