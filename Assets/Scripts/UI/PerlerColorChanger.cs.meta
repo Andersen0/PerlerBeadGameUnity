@@ -12,7 +12,7 @@ MonoImporter:
   - greenValueText: {instanceID: 0}
   - blueValueText: {instanceID: 0}
   - UICircleSprite: {instanceID: 0}
-  - defaultFont: {instanceID: 0}
+  - defaultFont: {fileID: 12800000, guid: c9f6d0e7bc8541498c9a4799ba184ede, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
