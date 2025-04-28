@@ -39,7 +39,7 @@ public class PerlerColorChanger : MonoBehaviour
         canvasUI.AddComponent<CanvasScaler>(); // resolution scaling
         canvasUI.AddComponent<GraphicRaycaster>(); // allows interaction
 
-        string[] names = { "red", "green", "blue" }; 
+        string[] sliderNames = { "red", "green", "blue" }; 
         Slider[] sliders = new Slider[3]; // to avoid duplicate code
 
         if (defaultFont == null)
@@ -50,7 +50,7 @@ public class PerlerColorChanger : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             GameObject newSlider = Instantiate(sliderPrefab, canvasUI.transform);
-            newSlider.name = names[i] + "Slider";
+            newSlider.name = sliderNames[i] + "Slider";
             newSlider.transform.SetParent(canvasUI.transform, false); // might be redundant
 
             RectTransform rt = newSlider.GetComponent<RectTransform>();
@@ -66,7 +66,7 @@ public class PerlerColorChanger : MonoBehaviour
 
 
             // Create a Text element for each slider value display
-            GameObject valueTextObject = new GameObject(names[i] + "ValueText", typeof(Text));
+            GameObject valueTextObject = new GameObject(sliderNames[i] + "ValueText", typeof(Text));
             valueTextObject.transform.SetParent(canvasUI.transform, false);
             Text valueText = valueTextObject.GetComponent<Text>();
             valueText.font = defaultFont;
