@@ -3,10 +3,11 @@ using UnityEngine.InputSystem; // Import the new Input System
 
 public class Spawner : MonoBehaviour
 {
-    private Vector3 mousePos;
     private Vector3 objectPos;
 
     public GameObject myPerlerBead;
+
+    private RaycastHit raycastHit;
 
     public void SpawnPerlerBead(Vector3 position)
     {
@@ -30,12 +31,17 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame) // New Input System check
+        if (Input.GetMouseButtonDown(0))
         {
-            mousePos = Mouse.current.position.ReadValue();
-            mousePos.z = 2.0f;
-            objectPos = Camera.main.ScreenToWorldPoint(mousePos);
-            SpawnPerlerBead(objectPos);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // Cast a ray from mouse position
+
+            if(Physics.Raycast(ray, out raycastHit, 2000))
+            {
+                Debug.Log("Placing a perler bead");
+                objectPos = raycastHit.point;
+                objectPos.y = 0.506375f; 
+                SpawnPerlerBead(objectPos);
+            }
         }
     }
 }
