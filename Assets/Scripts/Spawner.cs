@@ -19,12 +19,11 @@ public class Spawner : MonoBehaviour
             renderer = newBead.GetComponentInChildren<Renderer>();
         }
 
-        else
+        if (renderer != null)
         {
             renderer.material = new Material(renderer.material); // copies material to make sure we don't change all clone colors
             renderer.material.color = PerlerColorChanger.SelectedColor;
         }
-
     }
 
 
