@@ -1,24 +1,64 @@
+using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.InputSystem; // Import the new Input System
 
 public class Spawner : MonoBehaviour
 {
-    private Vector3 objectPos;
+    private Vector3 objectPosition;
 
-    public GameObject myPerlerBead;
+    public GameObject perlerBead;
 
     private RaycastHit raycastHit;
+    [SerializeField] private LayerMask layerMask;
 
-    public void SpawnPerlerBead(Vector3 position)
+    public float gridSize;
+    bool gridOn = true;
+    [SerializeField] private Toggle gridToggle;
+
+    void Update()
     {
-        position.y = 0.506375f;
-        GameObject newBead = Instantiate(myPerlerBead, position, Quaternion.identity); // Rotate 90 degrees on X-axis
+        if(gridOn)
+        {
+            perlerBead.transform.position = new Vector3(
+                RoundToNearestGrid(objectPosition.x),
+                objectPosition.y,
+                RoundToNearestGrid(objectPosition.z)
+            );
+        }
+        else
+        {
+            perlerBead.transform.position = objectPosition;
+        }
 
+        if(Input.GetMouseButtonDown(0))
+        {
+            CreatePerlerBead();
+        }
+    }
 
-        Renderer renderer = newBead.GetComponent<Renderer>();
+    private void FixedUpdate()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // Cast a ray from mouse position
+
+        if(Physics.Raycast(ray, out raycastHit, 2000, layerMask))
+        {
+            objectPosition = raycastHit.point;
+            Debug.DrawRay(ray.origin, ray.direction * 2000, Color.green);
+            Debug.Log("Ray hit!");
+        }
+        else
+        {
+            Debug.DrawRay(ray.origin, ray.direction * 2000, Color.red);
+        }
+    }
+
+    public void ChangePerlerColor(GameObject perler)
+    {
+        Debug.Log("Changing perler color!");
+        Renderer renderer = perler.GetComponent<Renderer>();
         if (renderer == null)
         {
-            renderer = newBead.GetComponentInChildren<Renderer>();
+            renderer = perler.GetComponentInChildren<Renderer>();
         }
 
         if (renderer != null)
@@ -28,19 +68,34 @@ public class Spawner : MonoBehaviour
         }
     }
 
-
-    void Update()
+    public void CreatePerlerBead()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // Cast a ray from mouse position
+        Debug.Log("Placing a perler!");
+        objectPosition.y = 0.506375f;
+        perlerBead = Instantiate(perlerBead, objectPosition, transform.rotation);
+        ChangePerlerColor(perlerBead);
+    }
 
-            if(Physics.Raycast(ray, out raycastHit, 2000))
-            {
-                Debug.Log("Placing a perler bead");
-                objectPos = raycastHit.point; 
-                SpawnPerlerBead(objectPos);
-            }
+    public void ToggleGrid()
+    {
+        if(gridToggle.isOn)
+        {
+            gridOn = true;
         }
+        else
+        {
+            gridOn = false;
+        }
+    }
+
+    float RoundToNearestGrid(float position)
+    {
+        float xDiff = position % gridSize;
+        position -= xDiff;
+        if(xDiff > (gridSize / 2))
+        {
+            position += gridSize;
+        }
+        return position;
     }
 }
