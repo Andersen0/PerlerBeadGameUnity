@@ -11,6 +11,7 @@ public class Spawner : MonoBehaviour
 
     public void SpawnPerlerBead(Vector3 position)
     {
+        position.y = 0.506375f;
         GameObject newBead = Instantiate(myPerlerBead, position, Quaternion.identity); // Rotate 90 degrees on X-axis
 
 
@@ -38,8 +39,7 @@ public class Spawner : MonoBehaviour
             if(Physics.Raycast(ray, out raycastHit, 2000))
             {
                 Debug.Log("Placing a perler bead");
-                objectPos = raycastHit.point;
-                objectPos.y = 0.506375f; 
+                objectPos = raycastHit.point; 
                 SpawnPerlerBead(objectPos);
             }
         }
