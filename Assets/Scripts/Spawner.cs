@@ -10,6 +10,7 @@ public class Spawner : MonoBehaviour
 
     private RaycastHit raycastHit;
     [SerializeField] private LayerMask layerMask;
+    bool canPlaceBead = false;
 
     public float gridSize;
     bool gridOn = true;
@@ -21,13 +22,17 @@ public class Spawner : MonoBehaviour
         {
             perlerBead.transform.position = new Vector3(
                 RoundToNearestGrid(objectPosition.x),
-                objectPosition.y,
+                objectPosition.y = 0.50637f,
                 RoundToNearestGrid(objectPosition.z)
             );
         }
         else
         {
-            perlerBead.transform.position = objectPosition;
+            perlerBead.transform.position = new Vector3(
+                objectPosition.x,
+                objectPosition.y = 0.50637f,
+                objectPosition.z
+            );
         }
 
         if(Input.GetMouseButtonDown(0))
@@ -43,11 +48,12 @@ public class Spawner : MonoBehaviour
         if(Physics.Raycast(ray, out raycastHit, 2000, layerMask))
         {
             objectPosition = raycastHit.point;
+            canPlaceBead = true;
             Debug.DrawRay(ray.origin, ray.direction * 2000, Color.green);
-            Debug.Log("Ray hit!");
         }
         else
         {
+            canPlaceBead = false;
             Debug.DrawRay(ray.origin, ray.direction * 2000, Color.red);
         }
     }
@@ -70,8 +76,9 @@ public class Spawner : MonoBehaviour
 
     public void CreatePerlerBead()
     {
+        if(!canPlaceBead) return;
         Debug.Log("Placing a perler!");
-        objectPosition.y = 0.506375f;
+        objectPosition.y = 0.50637f;
         perlerBead = Instantiate(perlerBead, objectPosition, transform.rotation);
         ChangePerlerColor(perlerBead);
     }
