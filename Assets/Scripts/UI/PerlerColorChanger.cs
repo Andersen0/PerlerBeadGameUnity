@@ -1,119 +1,104 @@
 using UnityEngine;
-using System.Collections;
-using UnityEngine.UI; // Required when Using UI elements.
+using UnityEngine.UI;
 
 public class PerlerColorChanger : MonoBehaviour
 {
     public GameObject sliderPrefab;
-
-    public Slider redSliderInfo;
-    public Slider greenSliderInfo;
-    public Slider blueSliderInfo;
-
-    public Text redValueText;
-    public Text greenValueText;
-    public Text blueValueText;
-
-    public Image UICircleSprite; // Color preview UI element
-    public static Color SelectedColor = Color.white;
-
+    public Image colorPreviewPrefab;
     public Font defaultFont;
+
+    private Slider redSlider, greenSlider, blueSlider;
+    private Text redValueText, greenValueText, blueValueText;
+    private Image colorPreview;
+
+    public static Color SelectedColor = Color.white;
 
     void Start()
     {
         Debug.Log("PerlerColorChanger script is running!");
-        sliderPrefab = Resources.Load<GameObject>("slider");
-        UICircleSprite = Resources.Load<Image>("UISprite");
 
-        if (sliderPrefab == null)
+        // Load resources
+        sliderPrefab = Resources.Load<GameObject>("slider");
+        colorPreviewPrefab = Resources.Load<Image>("UISprite");
+        if (defaultFont == null)
+            defaultFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+
+        if (sliderPrefab == null || colorPreviewPrefab == null)
         {
-            Debug.LogError("Slider prefab not found in Resources folder!");
+            Debug.LogError("Required prefab(s) not found in Resources folder!");
             return;
         }
 
-        // UI Canvas
-        GameObject canvasUI = new GameObject("UICanvas", typeof(Canvas));
-        Canvas canvas = canvasUI.GetComponent<Canvas>();
+        // Create UI Canvas
+        GameObject canvasGO = new GameObject("UICanvas", typeof(Canvas));
+        Canvas canvas = canvasGO.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvasGO.AddComponent<CanvasScaler>();
+        canvasGO.AddComponent<GraphicRaycaster>();
 
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay; // HUD Placement
-        canvasUI.AddComponent<CanvasScaler>(); // resolution scaling
-        canvasUI.AddComponent<GraphicRaycaster>(); // allows interaction
+        // Create RGB sliders and labels
+        redSlider = CreateSliderWithLabel(canvasGO.transform, "Red", new Vector2(-630, 300), out redValueText);
+        greenSlider = CreateSliderWithLabel(canvasGO.transform, "Green", new Vector2(-630, 270), out greenValueText);
+        blueSlider = CreateSliderWithLabel(canvasGO.transform, "Blue", new Vector2(-630, 240), out blueValueText);
 
-        string[] sliderNames = { "red", "green", "blue" }; 
-        Slider[] sliders = new Slider[3]; // to avoid duplicate code
+        // Create color preview
+        colorPreview = CreateColorPreview(canvasGO.transform, new Vector2(-450, 270));
 
-        if (defaultFont == null)
-        {
-            defaultFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); // TODO: replace with better font
-        }
-
-        for (int i = 0; i < 3; i++)
-        {
-            GameObject newSlider = Instantiate(sliderPrefab, canvasUI.transform);
-            newSlider.name = sliderNames[i] + "Slider";
-            newSlider.transform.SetParent(canvasUI.transform, false); // might be redundant
-
-            RectTransform rt = newSlider.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(200, 20);
-            rt.anchoredPosition = new Vector2(-630, 300 - (i*30) ); // Stack vertically
-
-            Slider slider = newSlider.GetComponent<Slider>();
-            slider.maxValue = 255;
-            slider.wholeNumbers = true;
-            slider.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
-
-            sliders[i] = slider;
-
-
-            // Create a Text element for each slider value display
-            GameObject valueTextObject = new GameObject(sliderNames[i] + "ValueText", typeof(Text));
-            valueTextObject.transform.SetParent(canvasUI.transform, false);
-            Text valueText = valueTextObject.GetComponent<Text>();
-            valueText.font = defaultFont;
-            valueText.text = "0"; // Initial value
-            valueText.fontSize = 20;
-            valueText.alignment = TextAnchor.MiddleLeft;
-            RectTransform textRect = valueTextObject.GetComponent<RectTransform>();
-            textRect.sizeDelta = new Vector2(100, 100);
-            textRect.anchoredPosition = new Vector2(-470, 300 - (i*30)); // Align next to sliders
-
-
-            // Assign text references
-            if (i == 0) redValueText = valueText;
-            if (i == 1) greenValueText = valueText;
-            if (i == 2) blueValueText = valueText;
-        }
-
-        // Instantiate the color preview from the prefab
-        GameObject colorPreviewObject = Instantiate(UICircleSprite.gameObject, canvasUI.transform);
-        UICircleSprite = colorPreviewObject.GetComponent<Image>();
-
-        UICircleSprite.rectTransform.sizeDelta = new Vector2(50, 50);
-        UICircleSprite.rectTransform.anchoredPosition = new Vector2(-450, 270);
-
-        // Assign to public variables
-        redSliderInfo = sliders[0];
-        greenSliderInfo = sliders[1];
-        blueSliderInfo = sliders[2];
-
-        UpdateSelectedColor(); // Set initial color
+        // Initialize color
+        UpdateSelectedColor();
     }
 
+    Slider CreateSliderWithLabel(Transform parent, string colorName, Vector2 position, out Text valueText)
+    {
+        // Instantiate slider
+        GameObject sliderGO = Instantiate(sliderPrefab, parent);
+        sliderGO.name = $"{colorName}Slider";
+        RectTransform sliderRT = sliderGO.GetComponent<RectTransform>();
+        sliderRT.sizeDelta = new Vector2(200, 20);
+        sliderRT.anchoredPosition = position;
+
+        Slider slider = sliderGO.GetComponent<Slider>();
+        slider.maxValue = 255;
+        slider.wholeNumbers = true;
+        slider.onValueChanged.AddListener(delegate { UpdateSelectedColor(); });
+
+        // Create value text
+        GameObject textGO = new GameObject($"{colorName}ValueText", typeof(Text));
+        textGO.transform.SetParent(parent, false);
+        valueText = textGO.GetComponent<Text>();
+        valueText.font = defaultFont;
+        valueText.text = "0";
+        valueText.fontSize = 20;
+        valueText.alignment = TextAnchor.MiddleLeft;
+        RectTransform textRT = textGO.GetComponent<RectTransform>();
+        textRT.sizeDelta = new Vector2(100, 20);
+        textRT.anchoredPosition = new Vector2(position.x + 160, position.y);
+
+        return slider;
+    }
+
+    Image CreateColorPreview(Transform parent, Vector2 position)
+    {
+        GameObject previewGO = Instantiate(colorPreviewPrefab.gameObject, parent);
+        previewGO.name = "ColorPreview";
+        Image previewImage = previewGO.GetComponent<Image>();
+        RectTransform previewRT = previewImage.rectTransform;
+        previewRT.sizeDelta = new Vector2(50, 50);
+        previewRT.anchoredPosition = position;
+        return previewImage;
+    }
 
     void UpdateSelectedColor()
     {
-        float r = redSliderInfo.value / 255f;
-        float g = greenSliderInfo.value / 255f;
-        float b = blueSliderInfo.value / 255f;
-
+        float r = redSlider.value / 255f;
+        float g = greenSlider.value / 255f;
+        float b = blueSlider.value / 255f;
         SelectedColor = new Color(r, g, b);
 
-        // Update color preview
-        UICircleSprite.color = SelectedColor;
-
-        // Update the slider value labels
-        redValueText.text = Mathf.RoundToInt(redSliderInfo.value).ToString();
-        greenValueText.text = Mathf.RoundToInt(greenSliderInfo.value).ToString();
-        blueValueText.text = Mathf.RoundToInt(blueSliderInfo.value).ToString();
+        // Update UI elements
+        colorPreview.color = SelectedColor;
+        redValueText.text = Mathf.RoundToInt(redSlider.value).ToString();
+        greenValueText.text = Mathf.RoundToInt(greenSlider.value).ToString();
+        blueValueText.text = Mathf.RoundToInt(blueSlider.value).ToString();
     }
 }
