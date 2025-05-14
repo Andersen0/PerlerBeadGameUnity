@@ -61,6 +61,7 @@ public class PerlerColorChanger : MonoBehaviour
         UpdateSelectedColor();
     }
 
+
     Slider CreateSliderWithLabel(Transform parent, string label, Vector2 offset, out Text valueText)
     {
         // Instantiate the slider prefab
@@ -127,7 +128,6 @@ public class PerlerColorChanger : MonoBehaviour
 
         return slider;
     }
-
 
 
     Image CreateColorPreview(Transform parent, Vector2 offset)
