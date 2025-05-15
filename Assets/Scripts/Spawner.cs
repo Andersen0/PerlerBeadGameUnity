@@ -21,9 +21,9 @@ public class Spawner : MonoBehaviour
         if(gridOn)
         {
             perlerBead.transform.position = new Vector3(
-                RoundToNearestGrid(objectPosition.x),
+                RoundToNearestGrid(objectPosition.x) - gridSize/2,
                 objectPosition.y = 0.50637f,
-                RoundToNearestGrid(objectPosition.z)
+                RoundToNearestGrid(objectPosition.z) - gridSize/2
             );
         }
         else
