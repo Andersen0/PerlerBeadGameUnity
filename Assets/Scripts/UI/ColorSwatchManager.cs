@@ -13,19 +13,46 @@ public class ColorSwatchManager : MonoBehaviour
     public Slider RedSlider, GreenSlider, BlueSlider;
 
     private bool initialized = false;
-    private const float doubleClickThreshold = 0.3f;
-
 
     private void Start()
     {
         StartCoroutine(WaitForDependencies());
     }
 
+
     IEnumerator WaitForDependencies()
     {
         while (ColorPreview == null || RedSlider == null || GreenSlider == null || BlueSlider == null)
         {
-            yield return null;
+            if (ColorPreview == null)
+            {
+                GameObject previewObj = GameObject.Find("ColorPreview");
+                if (previewObj != null)
+                    ColorPreview = previewObj.GetComponent<Image>();
+            }
+
+            if (RedSlider == null)
+            {
+                GameObject redObj = GameObject.Find("RedSlider");
+                if (redObj != null)
+                    RedSlider = redObj.GetComponent<Slider>();
+            }
+
+            if (GreenSlider == null)
+            {
+                GameObject greenObj = GameObject.Find("GreenSlider");
+                if (greenObj != null)
+                    GreenSlider = greenObj.GetComponent<Slider>();
+            }
+
+            if (BlueSlider == null)
+            {
+                GameObject blueObj = GameObject.Find("BlueSlider");
+                if (blueObj != null)
+                    BlueSlider = blueObj.GetComponent<Slider>();
+            }
+
+            yield return null; // wait a frame
         }
 
         InitializeSwatches();
@@ -34,10 +61,8 @@ public class ColorSwatchManager : MonoBehaviour
 
     private void InitializeSwatches()
     {
-        
         UpdateSwatchVisuals();
         Debug.Log("Color Manager Initialized");
-
         initialized = true;
     }
 
@@ -52,6 +77,7 @@ public class ColorSwatchManager : MonoBehaviour
             }
         }
     }
+
 
     public void OnSingleClick(int index)
     {

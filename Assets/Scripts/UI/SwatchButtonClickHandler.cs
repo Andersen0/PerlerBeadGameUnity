@@ -8,7 +8,7 @@ public class SwatchButtonHandler : MonoBehaviour, IPointerClickHandler
     public ColorSwatchManager manager;
 
     private float lastClickTime = 0f;
-    private const float doubleClickThreshold = 0.15f;
+    private const float doubleClickThreshold = 0.2f;
     private Coroutine singleClickCoroutine;
 
     public void OnPointerClick(PointerEventData eventData)
