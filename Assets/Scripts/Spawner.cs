@@ -29,7 +29,7 @@ public class Spawner : MonoBehaviour
         {
             currentBead.transform.position = new Vector3(
                 RoundToNearestGrid(objectPosition.x) - gridSize/2,
-                objectPosition.y = 0.50637f,
+                0.50637f,
                 RoundToNearestGrid(objectPosition.z) - gridSize/2
             );
         }
@@ -37,7 +37,7 @@ public class Spawner : MonoBehaviour
         {
             currentBead.transform.position = new Vector3(
                 objectPosition.x,
-                objectPosition.y = 0.50637f,
+                0.50637f,
                 objectPosition.z
             );
         }
