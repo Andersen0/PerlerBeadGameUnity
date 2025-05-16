@@ -18,6 +18,10 @@ This project is a cooperative effort between:
 
 ## 🚧 Features in Development
 
+- **Grid system** - Feature for locked placement of beads in a grid system, which should be modifyable
+- **Color saver** - Functionality for saving colors for future use. Allowing better accuracy in creating bead art.
+- **Top view button** - User tool for quick view of bead art from top view. Probably with return to original position and end.   
+
 ## 📦 Getting Started
 
 ## 📜 Project guidelines
