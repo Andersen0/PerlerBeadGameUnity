@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class SwatchButtonHandler : MonoBehaviour, IPointerClickHandler
+public class SwatchButtonClickHandler : MonoBehaviour, IPointerClickHandler
 {
     public int index;
     public ColorSwatchManager manager;
