@@ -1,46 +1,91 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class ColorSwatchManager : MonoBehaviour
 {
-    public Button[] colorButtons; // Assign 6 buttons in the Inspector
-    public Image[] buttonImages;  // These should match the colorButtons visually
-    public Color[] savedColors = new Color[6]; // Persistent storage
-    public Image colorPreview; // The main color preview UI
-    public Slider redSlider, greenSlider, blueSlider;
+    public List<Button> colorButtons;
+    public List<Image> buttonImages;
+    public List<Color> savedColors;
 
-    private float[] lastClickTimes = new float[6];
+    public Image ColorPreview;
+    public Slider RedSlider, GreenSlider, BlueSlider;
+
+    private bool initialized = false;
     private const float doubleClickThreshold = 0.3f;
 
-    void Start()
+
+    private void Start()
     {
-        for (int i = 0; i < colorButtons.Length; i++)
+        StartCoroutine(WaitForDependencies());
+    }
+
+    IEnumerator WaitForDependencies()
+    {
+        while (ColorPreview == null || RedSlider == null || GreenSlider == null || BlueSlider == null)
         {
-            int index = i; // Avoid closure issues
-            colorButtons[i].onClick.AddListener(() => OnSwatchClicked(index));
-            buttonImages[i].color = savedColors[i]; // Initialize visuals
+            yield return null;
+        }
+
+        InitializeSwatches();
+    }
+
+
+    private void InitializeSwatches()
+    {
+        
+        UpdateSwatchVisuals();
+        Debug.Log("Color Manager Initialized");
+
+        initialized = true;
+    }
+
+
+    public void UpdateSwatchVisuals()
+    {
+        for (int i = 0; i < savedColors.Count; i++)
+        {
+            if (i < buttonImages.Count)
+            {
+                buttonImages[i].color = savedColors[i];
+            }
         }
     }
 
-    void OnSwatchClicked(int index)
+    public void OnSingleClick(int index)
     {
-        float time = Time.time;
-        if (time - lastClickTimes[index] < doubleClickThreshold)
-        {
-            // Double click: save color
-            savedColors[index] = colorPreview.color;
-            buttonImages[index].color = savedColors[index];
-        }
-        else
-        {
-            // Single click: apply color
-            Color c = savedColors[index];
-            colorPreview.color = c;
-            redSlider.value = Mathf.RoundToInt(c.r * 255f);
-            greenSlider.value = Mathf.RoundToInt(c.g * 255f);
-            blueSlider.value = Mathf.RoundToInt(c.b * 255f);
-        }
-        lastClickTimes[index] = time;
+        if (!initialized || index >= savedColors.Count) return;
+        ApplySavedColor(index);
+    }
+
+
+    public void OnDoubleClick(int index)
+    {
+        if (!initialized || index >= savedColors.Count) return;
+        SaveColorToSlot(index);
+    }
+
+
+    public void ApplySavedColor(int index)
+    {
+        if (!initialized || index >= savedColors.Count) return;
+
+        Color color = savedColors[index];
+        ColorPreview.color = color;
+        RedSlider.value = Mathf.RoundToInt(color.r * 255f);
+        GreenSlider.value = Mathf.RoundToInt(color.g * 255f);
+        BlueSlider.value = Mathf.RoundToInt(color.b * 255f);
+    }
+
+
+    public void SaveColorToSlot(int index)
+    {
+        if (!initialized || index >= savedColors.Count) return;
+
+        Color currentColor = ColorPreview.color;
+        savedColors[index] = currentColor;
+        UpdateSwatchVisuals();
     }
 }
+
