@@ -178,50 +178,6 @@ Transform:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &276486156
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 276486158}
-  - component: {fileID: 276486157}
-  m_Layer: 0
-  m_Name: Perler Color Changer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &276486157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 276486156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 613099f6ac137ab46b36f67f135609f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &276486158
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 276486156}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 372.4712, y: 206.4296, z: 325.46603}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330693617
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,6 +442,26 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 736088439}
   m_SourcePrefab: {fileID: 100100000, guid: 45c6f85916c30cf40bc388bfeda21e26, type: 3}
+--- !u!1 &736088438 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 45c6f85916c30cf40bc388bfeda21e26, type: 3}
+  m_PrefabInstance: {fileID: 736088437}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &736088439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736088438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd00c644fe59f34bbd835666f100863, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliderPrefab: {fileID: 7477950620096790799, guid: 230b05d9470009240979a7553dcb7070, type: 3}
+  colorPreviewPrefab: {fileID: 0}
+  defaultFont: {fileID: 12800000, guid: c9f6d0e7bc8541498c9a4799ba184ede, type: 3}
 --- !u!1 &909231142
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,26 +541,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909231142}
   m_CullTransparentMesh: 1
---- !u!1 &736088438 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 45c6f85916c30cf40bc388bfeda21e26, type: 3}
-  m_PrefabInstance: {fileID: 736088437}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &736088439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 736088438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fd00c644fe59f34bbd835666f100863, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sliderPrefab: {fileID: 7477950620096790799, guid: 230b05d9470009240979a7553dcb7070, type: 3}
-  colorPreviewPrefab: {fileID: 0}
-  defaultFont: {fileID: 12800000, guid: c9f6d0e7bc8541498c9a4799ba184ede, type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,7 +946,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4a03919265b088947b0720a656b0a6f7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1200,11 +1156,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728ae096a7dd672439c9393de8b41621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  perlerBead: {fileID: 919132149155446097, guid: 95b49c0692597bf4f801fdcdcb5c1a7d, type: 3}
+  perlerBeadPrefab: {fileID: 919132149155446097, guid: 95b49c0692597bf4f801fdcdcb5c1a7d, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  gridSize: 0.0125
+  gridSize: 0.00525
   gridToggle: {fileID: 1172303547}
 --- !u!4 &1830029577
 Transform:
@@ -1335,4 +1291,3 @@ SceneRoots:
   - {fileID: 736088437}
   - {fileID: 110769777}
   - {fileID: 1512252011}
-  - {fileID: 276486158}

@@ -6,7 +6,8 @@ public class Spawner : MonoBehaviour
 {
     private Vector3 objectPosition;
 
-    public GameObject perlerBead;
+    public GameObject perlerBeadPrefab; // Original prefab
+    private GameObject currentBead; // "Ghost" bead
 
     private RaycastHit raycastHit;
     [SerializeField] private LayerMask layerMask;
@@ -16,11 +17,17 @@ public class Spawner : MonoBehaviour
     bool gridOn = true;
     [SerializeField] private Toggle gridToggle;
 
+    void Start()
+    {
+        currentBead = Instantiate(perlerBeadPrefab);
+        ChangePerlerColor(currentBead);
+    }
+
     void Update()
     {
         if(gridOn)
         {
-            perlerBead.transform.position = new Vector3(
+            currentBead.transform.position = new Vector3(
                 RoundToNearestGrid(objectPosition.x) - gridSize/2,
                 objectPosition.y = 0.50637f,
                 RoundToNearestGrid(objectPosition.z) - gridSize/2
@@ -28,7 +35,7 @@ public class Spawner : MonoBehaviour
         }
         else
         {
-            perlerBead.transform.position = new Vector3(
+            currentBead.transform.position = new Vector3(
                 objectPosition.x,
                 objectPosition.y = 0.50637f,
                 objectPosition.z
@@ -73,14 +80,25 @@ public class Spawner : MonoBehaviour
             renderer.material.color = PerlerColorChanger.SelectedColor;
         }
     }
+    
+    public void UpdateGhostBeadColor()
+    {
+        if (currentBead != null)
+        {
+            ChangePerlerColor(currentBead);
+        }
+    }
 
     public void CreatePerlerBead()
     {
-        if(!canPlaceBead) return;
+        if (!canPlaceBead) return;
         Debug.Log("Placing a perler!");
-        objectPosition.y = 0.50637f;
-        perlerBead = Instantiate(perlerBead, objectPosition, transform.rotation);
-        ChangePerlerColor(perlerBead);
+
+        Vector3 spawnPosition = currentBead.transform.position;
+        spawnPosition.y = 0.50637f; // Maintain consistent Y height
+
+        GameObject newBead = Instantiate(perlerBeadPrefab, spawnPosition, transform.rotation);
+        ChangePerlerColor(newBead);
     }
 
     public void ToggleGrid()

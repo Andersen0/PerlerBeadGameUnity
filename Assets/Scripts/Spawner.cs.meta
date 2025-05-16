@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 728ae096a7dd672439c9393de8b41621
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - perlerBeadPrefab: {instanceID: 0}
+  - gridToggle: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
