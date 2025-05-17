@@ -26,8 +26,7 @@ public class CameraController : MonoBehaviour
 
         newPosition = transform.position;
         newRotation = transform.rotation;
-        newZoom = cameraTransform.localPosition;
-        
+        newZoom = new Vector3(0f, 1.75f, -1.25f);
     }
 
     // Update is called once per frame
@@ -50,11 +49,18 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    void ClampZoom()
+    {
+        newZoom.y = Mathf.Clamp(newZoom.y, 0.75f, 4.75f);
+        newZoom.z = Mathf.Clamp(newZoom.z, -4.25f, -0.25f);
+    }
+
     void HandleMouseInput()
     {
-        if(Input.mouseScrollDelta.y != 0)
+        if (Input.mouseScrollDelta.y != 0)
         {
             newZoom += 10 * Input.mouseScrollDelta.y * zoomAmount;
+            ClampZoom();
         }
         if(Input.GetMouseButtonDown(1))
         {
@@ -142,6 +148,8 @@ public class CameraController : MonoBehaviour
         {
             newZoom -= zoomAmount * movementSpeed;
         }
+
+        ClampZoom();
 
         // Interpolate (find points some fraction along the line between the two positions for smoother movement)
         transform.SetPositionAndRotation(Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime), 
