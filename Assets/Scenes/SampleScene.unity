@@ -1184,7 +1184,7 @@ GameObject:
   - component: {fileID: 1791334103}
   - component: {fileID: 1791334102}
   m_Layer: 5
-  m_Name: ClearPerlersButton
+  m_Name: ClearAllPerlersButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
