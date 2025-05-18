@@ -162,6 +162,10 @@ MonoBehaviour:
   dragCurrentPosition: {x: 0, y: 0, z: 0}
   rotateStartPosition: {x: 0, y: 0, z: 0}
   rotateCurrentPosition: {x: 0, y: 0, z: 0}
+  cameraInTopView: 0
+  rotationCenter: {x: 0, y: 0, z: 0}
+  cameraViewMode: 0
+  topDownDistance: 1
 --- !u!4 &110769777
 Transform:
   m_ObjectHideFlags: 0
@@ -643,7 +647,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 2000
+  far clip plane: 7
   field of view: 10
   orthographic: 0
   orthographic size: 5
@@ -671,7 +675,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 10.25, z: -9.75}
+  m_LocalPosition: {x: 0, y: 1.7500013, z: -1.2500013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
