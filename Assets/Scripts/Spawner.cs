@@ -99,6 +99,7 @@ public class Spawner : MonoBehaviour
 
         GameObject newBead = Instantiate(perlerBeadPrefab, spawnPosition, transform.rotation);
         ChangePerlerColor(newBead);
+        newBead.tag = "Perler"; 
     }
 
     public void ToggleGrid()
