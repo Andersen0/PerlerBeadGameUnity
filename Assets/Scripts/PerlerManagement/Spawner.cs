@@ -85,6 +85,12 @@ public class Spawner : MonoBehaviour
     }
 
 
+    void LateUpdate()
+    {
+        currentBead.SetActive(!eraserMode && canPlaceBead);
+    }
+
+
     public void ChangePerlerColor(GameObject perler)
     {
         Debug.Log("Changing perler color!");
