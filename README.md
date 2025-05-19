@@ -18,33 +18,11 @@ This project is a cooperative effort between:
 
 ## 🚧 Features in Development
 
-- **Grid system** - iteration 2 - Feature for locked placement of beads in a grid system, which should be modifyable
-- **Color saver** - iteration 2 - Functionality for saving colors for future use. Allowing better accuracy in creating bead art. 
-- **Camera Control** - iteration 2 - Further development of camera tool and boundaries. Position reset button.
-- **Pegboard asset** - iteration 1 - Create 3D asset for pegboard to increase realism and visualization.
-- **Melted bead asset** - iteration 1 - Make a 3D version of a melted bead. For future use in fabrication of full 3D model of bead figure.
-- **Menu screen** - iteration 1 - Menu screen for board selection, load/save features, and 3D model viewer.
-- **Create and export feature** - iteration 1 - Allow completed bead structure to be fused to a 3D model and exported as a 3D file. Find file type which can keep colors on the model if possible.  
+- **Grid system** - Feature for locked placement of beads in a grid system, which should be modifyable
+- **Color saver** - Functionality for saving colors for future use. Allowing better accuracy in creating bead art.
+- **Top view button** - User tool for quick view of bead art from top view. Probably with return to original position and end.   
 
 ## 📦 Getting Started
-
-### Controls
-
-**Color System**
-- Left click to choose from saved colors, double click to save new color to slot
-- Click and drag sliders to change RGB values
-- Color preview image shows the currently selected color
-
-**Camera Controls**
-- Press 'O' or 'Home' on keyboard to switch between angled(default) and top-down view
-- Press and hold 'Scroll Wheel' and drag the mouse to rotate camera around fixed centres
-- Press 'Q' or 'E' to rotate camera around fixed centres
-- Use 'WASD' or press and hold 'Right Mouse Button' and drag the mouse to move laterally around the world scene
-- Hold 'Shift' on keyboard to speed up camera movement
-
-**Bead Placement**
-- While hovering above the board, a bead can be placed by pressing left click.
-- Uncheck grid button to enable free placement on the board. Not following gridlines.
 
 ## 📜 Project guidelines
 
@@ -55,20 +33,3 @@ This project is a cooperative effort between:
 - Press **create branch** from task
  
 ![bilde](https://github.com/user-attachments/assets/27985c16-b7fc-4e52-95f7-eb12f3246115)
-
-
-## 🖼️ Gallery
-
-![bilde](https://github.com/user-attachments/assets/453afb14-2018-4716-a3ed-1ed149897fea)
-
-![bilde](https://github.com/user-attachments/assets/d7c4e8d2-6adb-4ff8-a8c7-e00ee68cdd54)
-
-![bilde](https://github.com/user-attachments/assets/38b86089-42f1-4039-a73f-06266cc61efa)
-
-![bilde](https://github.com/user-attachments/assets/2fbabd0b-a697-4df5-a2d1-062a8cc227b2)
-
-![bilde](https://github.com/user-attachments/assets/648f394d-00d2-4a10-b45e-55bae838e428)
-
-![bead](https://github.com/user-attachments/assets/04922b03-7fab-4027-b804-526c08328f35)
-
-
