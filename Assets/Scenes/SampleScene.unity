@@ -2337,6 +2337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beadParent: {fileID: 593750337}
   perlerBeadPrefab: {fileID: 5304769423867399361, guid: c4683f56350c3c74cb6d0407c5b44f67, type: 3}
+  ghostBeadAlpha: 0.8
   placedBeads: []
   eraserMode: 0
   layerMask:

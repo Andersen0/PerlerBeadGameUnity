@@ -10,6 +10,9 @@ public class Spawner : MonoBehaviour
 
     public GameObject perlerBeadPrefab; // Original prefab
     private GameObject currentBead; // "Ghost" bead
+    public float ghostBeadAlpha = 0.5f;
+    private GameObject highlightedBead = null;
+    private Material[] originalMaterials = null;
 
     public List<GameObject> placedBeads = new List<GameObject>();
     public bool eraserMode = false;
@@ -22,11 +25,13 @@ public class Spawner : MonoBehaviour
     bool gridOn = true;
     [SerializeField] private Toggle gridToggle;
 
+
     void Start()
     {
         currentBead = Instantiate(perlerBeadPrefab);
         ChangePerlerColor(currentBead);
     }
+
 
     void Update()
     {
@@ -35,41 +40,38 @@ public class Spawner : MonoBehaviour
             DeleteLastBead();
         }
 
-        if (gridOn)
-        {
-            currentBead.transform.position = new Vector3(
-                RoundToNearestGrid(objectPosition.x) - gridSize / 2,
-                0.50637f,
-                RoundToNearestGrid(objectPosition.z) - gridSize / 2
-            );
-        }
-        else
-        {
-            currentBead.transform.position = new Vector3(
-                objectPosition.x,
-                0.50637f,
-                objectPosition.z
-            );
-        }
+        // Update ghost bead position (same as before)
+        UpdateGhostBeadPosition();
 
+        // Handle placing or erasing beads on mouse click
         if (Input.GetMouseButtonDown(0))
         {
             if (eraserMode)
-            {
                 TryEraseBead();
-            }
             else
-            {
                 CreatePerlerBead();
-            }
+        }
+
+        // Highlight bead under cursor if eraser mode active
+        if (eraserMode)
+        {
+            HandleEraserHighlight();
+            currentBead.SetActive(false);  // Hide ghost bead in eraser mode
+        }
+        else
+        {
+            ClearHighlight();
+            currentBead.SetActive(true);   // Show ghost bead in normal mode
         }
     }
+
+
 
     private void FixedUpdate()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // Cast a ray from mouse position
 
-        if(Physics.Raycast(ray, out raycastHit, 2000, layerMask))
+        if (Physics.Raycast(ray, out raycastHit, 2000, layerMask))
         {
             objectPosition = raycastHit.point;
             canPlaceBead = true;
@@ -81,6 +83,7 @@ public class Spawner : MonoBehaviour
             Debug.DrawRay(ray.origin, ray.direction * 2000, Color.red);
         }
     }
+
 
     public void ChangePerlerColor(GameObject perler)
     {
@@ -97,14 +100,131 @@ public class Spawner : MonoBehaviour
             renderer.material.color = PerlerColorChanger.SelectedColor;
         }
     }
-    
-    public void UpdateGhostBeadColor()
+
+
+    public void ChangeGhostPerlerColor()
     {
         if (currentBead != null)
         {
-            ChangePerlerColor(currentBead);
+            MakeGhostPerlerTransparent(currentBead, ghostBeadAlpha);
         }
     }
+
+
+    void MakeGhostPerlerTransparent(GameObject ghostBead, float alpha)
+    {
+        Renderer renderer = ghostBead.GetComponent<Renderer>();
+        if (renderer == null)
+        {
+            renderer = ghostBead.GetComponentInChildren<Renderer>();
+        }
+
+        if (renderer != null)
+        {
+            // Create a new instance of the material so we don't affect other objects
+            Material mat = new Material(renderer.material);
+
+            // Enable transparency mode on the shader
+            mat.SetFloat("_Mode", 3); // For Standard shader: 3 = Transparent
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.renderQueue = 3100;
+
+            // Set the color with reduced alpha
+            Color color = PerlerColorChanger.SelectedColor;
+            color.a = alpha;  // Set transparency level here
+            mat.color = color;
+
+            // Assign the transparent material
+            renderer.material = mat;
+        }
+    }
+
+
+    public void UpdateGhostBeadColor()
+    {
+        {
+            ChangeGhostPerlerColor();
+        }
+    }
+
+
+    void HandleEraserHighlight()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo))
+        {
+            if (hitInfo.collider.CompareTag("PerlerTag"))
+            {
+                GameObject bead = hitInfo.collider.gameObject;
+                if (highlightedBead != bead)
+                {
+                    ClearHighlight();
+                    HighlightBead(bead, ghostBeadAlpha);
+                }
+                return;
+            }
+        }
+        ClearHighlight();
+    }
+
+
+    void HighlightBead(GameObject bead, float alpha)
+    {
+        Renderer[] renderers = bead.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0) return;
+
+        // Save original materials
+        originalMaterials = new Material[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            originalMaterials[i] = renderers[i].material;
+        }
+
+        foreach (Renderer renderer in renderers)
+        {
+            Material transparentMat = new Material(renderer.material);
+            transparentMat.SetFloat("_Mode", 3);
+            transparentMat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            transparentMat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            transparentMat.SetInt("_ZWrite", 0);
+            transparentMat.DisableKeyword("_ALPHATEST_ON");
+            transparentMat.EnableKeyword("_ALPHABLEND_ON");
+            transparentMat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            transparentMat.renderQueue = 3100;
+
+            Color color = transparentMat.color;
+            color.a = alpha;
+            transparentMat.color = color;
+
+            renderer.material = transparentMat;
+        }
+
+        highlightedBead = bead;
+    }
+
+
+    void ClearHighlight()
+    {
+        if (highlightedBead != null)
+        {
+            Renderer[] renderers = highlightedBead.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == originalMaterials.Length)
+            {
+                for (int i = 0; i < renderers.Length; i++)
+                {
+                    renderers[i].material = originalMaterials[i];
+                }
+            }
+            highlightedBead = null;
+            originalMaterials = null;
+        }
+    }
+
 
     public void CreatePerlerBead()
     {
@@ -120,7 +240,8 @@ public class Spawner : MonoBehaviour
 
         placedBeads.Add(newBead);
     }
-    
+
+
     void DeleteLastBead()
     {
         if (placedBeads.Count > 0)
@@ -130,6 +251,7 @@ public class Spawner : MonoBehaviour
             Destroy(lastBead);
         }
     }
+
 
     void TryEraseBead()
     {
@@ -146,11 +268,34 @@ public class Spawner : MonoBehaviour
         }
     }
 
+
     public void ToggleEraserMode()
     {
         eraserMode = !eraserMode;
         currentBead.SetActive(!eraserMode); // Hide ghost bead when erasing
     }
+
+
+    void UpdateGhostBeadPosition()
+    {
+        if (gridOn)
+        {
+            currentBead.transform.position = new Vector3(
+                RoundToNearestGrid(objectPosition.x) - gridSize / 2,
+                0.50637f,
+                RoundToNearestGrid(objectPosition.z) - gridSize / 2
+            );
+        }
+        else
+        {
+            currentBead.transform.position = new Vector3(
+                objectPosition.x,
+                0.50637f,
+                objectPosition.z
+            );
+        }
+    }
+
 
     public void ToggleGrid()
     {
@@ -164,14 +309,17 @@ public class Spawner : MonoBehaviour
         }
     }
 
+
     float RoundToNearestGrid(float position)
     {
         float xDiff = position % gridSize;
         position -= xDiff;
-        if(xDiff > (gridSize / 2))
+        if (xDiff > (gridSize / 2))
         {
             position += gridSize;
         }
         return position;
     }
+    
+
 }
