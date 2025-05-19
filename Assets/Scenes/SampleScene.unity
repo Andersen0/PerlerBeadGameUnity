@@ -149,11 +149,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 963194228}
-  normalSpeed: 0.05
-  fastSpeed: 0.2
+  normalSpeed: 0.0005
+  fastSpeed: 0.002
   inputLerpSpeed: 4
   transitionLerpSpeed: 8
-  rotationAmount: 2
+  rotationAmount: 80
   zoomAmount: {x: 0, y: -0.05, z: 0.05}
   newPosition: {x: 0, y: 0, z: 0}
   newRotation: {x: 0, y: 0, z: 0, w: 0}

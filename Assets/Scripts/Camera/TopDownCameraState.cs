@@ -79,10 +79,10 @@ public class TopDownCameraState : ICameraState
         // Smooth rotation with Q/E keys
         if (Input.GetKey(KeyCode.Q))
         {
-            controller.newRotation *= Quaternion.Euler(0f, -speed * 35f, 0f);
+            controller.newRotation *= Quaternion.Euler(0f, -speed * 250f, 0f);
         }
         if (Input.GetKey(KeyCode.E)) {
-            controller.newRotation *= Quaternion.Euler(0f, speed * 35f, 0f);
+            controller.newRotation *= Quaternion.Euler(0f, speed * 250f, 0f);
         }
     }
 }
