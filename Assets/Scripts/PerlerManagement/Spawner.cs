@@ -1,13 +1,18 @@
 using UnityEngine.UI;
 using UnityEngine;
-using UnityEngine.InputSystem; // Import the new Input System
+using System.Collections.Generic;
 
 public class Spawner : MonoBehaviour
 {
+    public Transform beadParent; // Assigned in the Inspector
+
     private Vector3 objectPosition;
 
     public GameObject perlerBeadPrefab; // Original prefab
     private GameObject currentBead; // "Ghost" bead
+
+    public List<GameObject> placedBeads = new List<GameObject>();
+    public bool eraserMode = false;
 
     private RaycastHit raycastHit;
     [SerializeField] private LayerMask layerMask;
@@ -25,12 +30,17 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
-        if(gridOn)
+        if (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.Delete))
+        {
+            DeleteLastBead();
+        }
+
+        if (gridOn)
         {
             currentBead.transform.position = new Vector3(
-                RoundToNearestGrid(objectPosition.x) - gridSize/2,
+                RoundToNearestGrid(objectPosition.x) - gridSize / 2,
                 0.50637f,
-                RoundToNearestGrid(objectPosition.z) - gridSize/2
+                RoundToNearestGrid(objectPosition.z) - gridSize / 2
             );
         }
         else
@@ -42,9 +52,16 @@ public class Spawner : MonoBehaviour
             );
         }
 
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            CreatePerlerBead();
+            if (eraserMode)
+            {
+                TryEraseBead();
+            }
+            else
+            {
+                CreatePerlerBead();
+            }
         }
     }
 
@@ -91,20 +108,53 @@ public class Spawner : MonoBehaviour
 
     public void CreatePerlerBead()
     {
-        if (!canPlaceBead) return;
+        if (!canPlaceBead || eraserMode) return;
         Debug.Log("Placing a perler!");
 
         Vector3 spawnPosition = currentBead.transform.position;
         spawnPosition.y = 0.50637f; // Maintain consistent Y height
 
-        GameObject newBead = Instantiate(perlerBeadPrefab, spawnPosition, transform.rotation);
+        GameObject newBead = Instantiate(perlerBeadPrefab, spawnPosition, transform.rotation, beadParent);
         ChangePerlerColor(newBead);
-        newBead.tag = "PerlerTag"; 
+        newBead.tag = "PerlerTag";
+
+        placedBeads.Add(newBead);
+    }
+    
+    void DeleteLastBead()
+    {
+        if (placedBeads.Count > 0)
+        {
+            GameObject lastBead = placedBeads[placedBeads.Count - 1];
+            placedBeads.RemoveAt(placedBeads.Count - 1);
+            Destroy(lastBead);
+        }
+    }
+
+    void TryEraseBead()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo))
+        {
+            if (hitInfo.collider.CompareTag("PerlerTag"))
+            {
+                GameObject bead = hitInfo.collider.gameObject;
+                placedBeads.Remove(bead);
+                Destroy(bead);
+                Debug.Log("Bead erased!");
+            }
+        }
+    }
+
+    public void ToggleEraserMode()
+    {
+        eraserMode = !eraserMode;
+        currentBead.SetActive(!eraserMode); // Hide ghost bead when erasing
     }
 
     public void ToggleGrid()
     {
-        if(gridToggle.isOn)
+        if (gridToggle.isOn)
         {
             gridOn = true;
         }
