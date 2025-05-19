@@ -37,13 +37,18 @@ public class PerlerColorChanger : MonoBehaviour
         Canvas canvas = canvasGO.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasGO.AddComponent<CanvasScaler>();
+        CanvasScaler canvasScaler = canvasGO.GetComponent<CanvasScaler>();
+        canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvasScaler.referenceResolution = new Vector2(1920, 1080); // 1080p resolution
+        canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+        canvasScaler.matchWidthOrHeight = 0.5f; // 0 = width, 1 = height, 0.5 = balanced
         canvasGO.AddComponent<GraphicRaycaster>();
 
         // Define vertical spacing between sliders
         float verticalSpacing = 30f;
 
         // Starting offset from the top-left corner
-        Vector2 startOffset = new Vector2(10, -50);
+        Vector2 startOffset = new Vector2(10, -100);
 
         // Create RGB sliders and labels
         redSlider = CreateSliderWithLabel(canvasGO.transform, "Red", startOffset, out redValueText);
