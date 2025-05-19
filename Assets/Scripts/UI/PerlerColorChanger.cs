@@ -13,9 +13,13 @@ public class PerlerColorChanger : MonoBehaviour
 
     public static Color SelectedColor = Color.white;
 
+    private Spawner spawner;
+
     void Start()
     {
         Debug.Log("PerlerColorChanger script is running!");
+
+        spawner = FindFirstObjectByType<Spawner>();
 
         // Load resources
         sliderPrefab = Resources.Load<GameObject>("slider");
@@ -168,5 +172,11 @@ public class PerlerColorChanger : MonoBehaviour
         redValueText.text = Mathf.RoundToInt(redSlider.value).ToString();
         greenValueText.text = Mathf.RoundToInt(greenSlider.value).ToString();
         blueValueText.text = Mathf.RoundToInt(blueSlider.value).ToString();
+
+        // Update ghost bead color
+        if (spawner != null)
+        {
+            spawner.UpdateGhostBeadColor();
+        }
     }
 }
