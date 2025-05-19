@@ -31,7 +31,7 @@ This project is a cooperative effort between:
 ### Controls
 
 **Color System**
-- Left click to chose from saved colors, double click to save new color to slot
+- Left click to choose from saved colors, double click to save new color to slot
 - Click and drag sliders to change RGB values
 - Color preview image shows the currently selected color
 
