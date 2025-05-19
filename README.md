@@ -36,7 +36,11 @@ This project is a cooperative effort between:
 - Color preview image shows the currently selected color
 
 **Camera Controls**
-
+- Press 'O' or 'Home' on keyboard to switch between angled(default) and top-down view
+- Press and hold 'Scroll Wheel' and drag the mouse to rotate camera around fixed centres
+- Press 'Q' or 'E' to rotate camera around fixed centres
+- Use 'WASD' or press and hold 'Right Mouse Button' and drag the mouse to move laterally around the world scene
+- Hold 'Shift' on keyboard to speed up camera movement
 
 **Bead Placement**
 - While hovering above the board, a bead can be placed by pressing left click.
