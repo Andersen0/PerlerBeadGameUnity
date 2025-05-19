@@ -71,4 +71,7 @@ This project is a cooperative effort between:
 
 ![bead](https://github.com/user-attachments/assets/04922b03-7fab-4027-b804-526c08328f35)
 
+![bilde](https://github.com/user-attachments/assets/77c1bc90-657d-4a06-b60f-d406bb813691)
+
+
 
