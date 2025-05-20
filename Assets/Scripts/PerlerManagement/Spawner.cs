@@ -1,9 +1,19 @@
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class Spawner : MonoBehaviour
 {
+    public Image pencilButtonImage;
+    public Image eraserButtonImage;
+
+    public Sprite pencilActiveSprite;
+    public Sprite pencilGreyedOutSprite;
+
+    public Sprite eraserActiveSprite;
+    public Sprite eraserGreyedOutSprite;
+
     public Transform beadParent; // Assigned in the Inspector
 
     private Vector3 objectPosition;
@@ -30,11 +40,15 @@ public class Spawner : MonoBehaviour
     {
         currentBead = Instantiate(perlerBeadPrefab);
         ChangePerlerColor(currentBead);
+
+        SetPencilMode();
     }
 
 
     void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return; // Don't run spawner script when hovering UI
+
         if (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.Delete))
         {
             DeleteLastBead();
@@ -275,12 +289,25 @@ public class Spawner : MonoBehaviour
     }
 
 
-    public void ToggleEraserMode()
+    public void SetEraserMode()
     {
-        eraserMode = !eraserMode;
-        currentBead.SetActive(!eraserMode); // Hide ghost bead when erasing
+        eraserMode = true;
+        currentBead.SetActive(false); // Hide ghost bead when erasing
+
+        // Update button visuals
+        pencilButtonImage.sprite = pencilGreyedOutSprite;
+        eraserButtonImage.sprite = eraserActiveSprite;
     }
 
+    public void SetPencilMode()
+    {
+        eraserMode = false;
+        currentBead.SetActive(true);
+
+        // Update button visuals
+        pencilButtonImage.sprite = pencilActiveSprite;
+        eraserButtonImage.sprite = eraserGreyedOutSprite;
+    }
 
     void UpdateGhostBeadPosition()
     {
