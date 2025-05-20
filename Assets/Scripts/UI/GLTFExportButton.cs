@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System.Linq;  // <-- Add this
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,33 +16,35 @@ public class GLTFExportButton : MonoBehaviour
     void Start()
     {
         if (exportButton != null)
-            exportButton.onClick.AddListener(ExportBeadToGLTF);
+            exportButton.onClick.AddListener(ExportBeadToGLB);
     }
 
-    void ExportBeadToGLTF()
+    void ExportBeadToGLB()
     {
-        GameObject bead = GameObject.Find("lowVertixPerler(Clone)");
-        if (bead == null)
+#if UNITY_EDITOR
+        // Find all beads in the scene whose names start with "lowVertixPerler"
+        GameObject[] beads = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None)
+                                   .Where(go => go.name.StartsWith("lowVertixPerler"))
+                                   .ToArray();
+
+        if (beads == null || beads.Length == 0)
         {
-            Debug.LogError("Could not find lowVertixPerler(Clone) in the scene.");
+            Debug.LogError("No beads found in the scene with name starting 'lowVertixPerler'.");
             return;
         }
 
-#if UNITY_EDITOR
         string folderPath = EditorUtility.SaveFolderPanel("Choose Export Folder", "", "");
         if (string.IsNullOrEmpty(folderPath)) return;
 
-        string filePath = Path.Combine(folderPath, bead.name + ".glb");
+        string filePath = Path.Combine(folderPath, "AllBeads.glb");
 
-        // ✅ Use the modern, recommended constructor
-        var options = new ExportContext
-        {
-            //ExportInactivePrimitives = false,
-            //ShouldExportExtensions = false,
-            //ExportOnlySelected = false
-        };
+        // Collect all bead transforms
+        Transform[] beadTransforms = new Transform[beads.Length];
+        for (int i = 0; i < beads.Length; i++)
+            beadTransforms[i] = beads[i].transform;
 
-        var exporter = new GLTFSceneExporter(new[] { bead.transform }, options);
+        var context = new ExportContext();
+        var exporter = new GLTFSceneExporter(beadTransforms, context);
 
         try
         {

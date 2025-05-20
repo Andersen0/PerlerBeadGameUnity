@@ -8,7 +8,7 @@ using UnityGLTF;
 
 public class GLTFExporter : MonoBehaviour
 {
-    public void ExportBeadToGLTF()
+    public void ExportBeadToGLB()
     {
         GameObject bead = GameObject.Find("lowVertixPerler(Clone)");
         if (bead == null)
