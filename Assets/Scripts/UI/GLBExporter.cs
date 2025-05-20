@@ -6,7 +6,7 @@ using System.IO;
 using UnityEngine;
 using UnityGLTF;
 
-public class GLTFExporter : MonoBehaviour
+public class GLBExporter : MonoBehaviour
 {
     public void ExportBeadToGLB()
     {

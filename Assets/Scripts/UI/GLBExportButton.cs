@@ -9,7 +9,7 @@ using UnityEditor;
 
 using UnityGLTF;
 
-public class GLTFExportButton : MonoBehaviour
+public class GLBExportButton : MonoBehaviour
 {
     public Button exportButton;
 
