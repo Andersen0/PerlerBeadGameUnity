@@ -10,10 +10,11 @@ public class GLBExporter : MonoBehaviour
 {
     public void ExportBeadToGLB()
     {
-        GameObject bead = GameObject.Find("lowVertixPerler(Clone)");
-        if (bead == null)
+        GameObject[] beads = GameObject.FindGameObjectsWithTag("PerlerTag");  // assign "Bead" tag to all bead objects
+
+        if (beads == null || beads.Length == 0)
         {
-            Debug.LogError("Could not find lowVertixPerler(Clone) in the scene.");
+            Debug.LogError("No beads found in the scene with tag 'Bead'.");
             return;
         }
 
@@ -21,11 +22,20 @@ public class GLBExporter : MonoBehaviour
         string folderPath = EditorUtility.SaveFolderPanel("Choose Export Folder", "", "");
         if (string.IsNullOrEmpty(folderPath)) return;
 
-        string filePath = Path.Combine(folderPath, bead.name + ".glb");
+        // Use a fixed filename or prompt for name, not beads.ToString()
+        string filePath = Path.Combine(folderPath, "AllBeads.glb");
 
-        // ✅ Fully modern, no obsolete usage
-        var context = new ExportContext();  // Replace or customize if needed
-        var exporter = new GLTFSceneExporter(new[] { bead.transform }, context);
+        // Create a Transform[] from the GameObject[]
+        Transform[] beadTransforms = new Transform[beads.Length];
+        for (int i = 0; i < beads.Length; i++)
+        {
+            beadTransforms[i] = beads[i].transform;
+        }
+
+        var context = new ExportContext();
+
+        // Pass the transforms and the context to the constructor
+        var exporter = new GLTFSceneExporter(beadTransforms, context);
 
         try
         {

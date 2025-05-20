@@ -33,10 +33,11 @@ public class GLBExportButton : MonoBehaviour
             return;
         }
 
-        string folderPath = EditorUtility.SaveFolderPanel("Choose Export Folder", "", "");
-        if (string.IsNullOrEmpty(folderPath)) return;
-
-        string filePath = Path.Combine(folderPath, "AllBeads.glb");
+        // Allows the user to choose folder path and file name
+        string filePath = EditorUtility.SaveFilePanel("Save GLB File", "", "AllBeads", "glb");
+        if (string.IsNullOrEmpty(filePath)) return;
+        if (Path.GetExtension(filePath).ToLower() != ".glb")
+            filePath += ".glb";
 
         // Collect all bead transforms
         Transform[] beadTransforms = new Transform[beads.Length];
