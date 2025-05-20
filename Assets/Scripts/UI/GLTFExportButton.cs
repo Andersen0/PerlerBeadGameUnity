@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using Siccity.GLTFUtility;
+
+using UnityGLTF;
 
 public class GLTFExportButton : MonoBehaviour
 {
@@ -12,10 +15,10 @@ public class GLTFExportButton : MonoBehaviour
     void Start()
     {
         if (exportButton != null)
-            exportButton.onClick.AddListener(ExportBeadToGLB);
+            exportButton.onClick.AddListener(ExportBeadToGLTF);
     }
 
-    void ExportBeadToGLB()
+    void ExportBeadToGLTF()
     {
         GameObject bead = GameObject.Find("lowVertixPerler(Clone)");
         if (bead == null)
@@ -25,15 +28,32 @@ public class GLTFExportButton : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-        // Manually open the Save File dialog and use the correct export method
-        string path = EditorUtility.SaveFilePanel("Export Bead as GLB", "", bead.name + ".glb", "glb");
-        if (!string.IsNullOrEmpty(path))
+        string folderPath = EditorUtility.SaveFolderPanel("Choose Export Folder", "", "");
+        if (string.IsNullOrEmpty(folderPath)) return;
+
+        string filePath = Path.Combine(folderPath, bead.name + ".glb");
+
+        // ✅ Use the modern, recommended constructor
+        var options = new ExportContext
         {
-            Exporter.ExportGLB(bead, path);
-            Debug.Log("✅ Exported to: " + path);
+            //ExportInactivePrimitives = false,
+            //ShouldExportExtensions = false,
+            //ExportOnlySelected = false
+        };
+
+        var exporter = new GLTFSceneExporter(new[] { bead.transform }, options);
+
+        try
+        {
+            exporter.SaveGLB(filePath, "");
+            Debug.Log("✅ GLB exported to: " + filePath);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("❌ Export failed: " + ex.Message);
         }
 #else
-        Debug.LogWarning("GLB export only works in the Unity Editor.");
+        Debug.LogWarning("GLTF export only works in the Unity Editor.");
 #endif
     }
 }
