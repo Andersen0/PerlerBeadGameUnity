@@ -27,7 +27,7 @@ public class GLBExportButton : MonoBehaviour
                                    .Where(go => go.name.StartsWith("lowVertixPerler"))
                                    .ToArray();
 
-        if (beads == null || beads.Length == 0)
+        if (beads.Length == 0)
         {
             Debug.LogError("No beads found in the scene with name starting 'lowVertixPerler'.");
             return;
