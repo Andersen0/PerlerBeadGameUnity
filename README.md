@@ -73,5 +73,6 @@ This project is a cooperative effort between:
 
 ![bilde](https://github.com/user-attachments/assets/77c1bc90-657d-4a06-b60f-d406bb813691)
 
+![bilde](https://github.com/user-attachments/assets/3e5e090c-c222-41e6-8ffc-d066558760f0)
 
-
+![bilde](https://github.com/user-attachments/assets/f074339f-f03f-4ca0-a466-147f97a1ccb9)
