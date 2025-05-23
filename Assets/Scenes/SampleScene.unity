@@ -2361,7 +2361,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  gridSize: 0.00525
+  perlerSpacing: 0.00525
   gridToggle: {fileID: 1172303547}
 --- !u!4 &1830029577
 Transform:

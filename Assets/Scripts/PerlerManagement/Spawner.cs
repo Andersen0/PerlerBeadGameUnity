@@ -31,7 +31,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     bool canPlaceBead = false;
 
-    public float gridSize;
+    public float perlerSpacing;
     bool gridOn = true;
     [SerializeField] private Toggle gridToggle;
 
@@ -314,9 +314,9 @@ public class Spawner : MonoBehaviour
         if (gridOn)
         {
             currentBead.transform.position = new Vector3(
-                RoundToNearestGrid(objectPosition.x) - gridSize / 2,
+                RoundToNearestGrid(objectPosition.x) - perlerSpacing / 2,
                 0.50637f,
-                RoundToNearestGrid(objectPosition.z) - gridSize / 2
+                RoundToNearestGrid(objectPosition.z) - perlerSpacing / 2
             );
         }
         else
@@ -345,14 +345,13 @@ public class Spawner : MonoBehaviour
 
     float RoundToNearestGrid(float position)
     {
-        float xDiff = position % gridSize;
+        float xDiff = position % perlerSpacing;
         position -= xDiff;
-        if (xDiff > (gridSize / 2))
+        if (xDiff > (perlerSpacing / 2))
         {
-            position += gridSize;
+            position += perlerSpacing;
         }
         return position;
     }
-    
 
 }
