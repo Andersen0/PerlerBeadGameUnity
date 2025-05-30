@@ -13,6 +13,19 @@ MonoBehaviour:
   m_Name: BakeParticleSystem
   m_EditorClassIdentifier: 
   enabled: 0
+--- !u!114 &-8138974778120771031
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3011a000a64498d8297909d5cc472a, type: 3}
+  m_Name: SpriteRendererExport
+  m_EditorClassIdentifier: 
+  enabled: 1
 --- !u!114 &-8116560420797226454
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -26,6 +39,19 @@ MonoBehaviour:
   m_Name: Ktx2Import
   m_EditorClassIdentifier: 
   enabled: 1
+--- !u!114 &-6428311421403791176
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d106e4b0674b44e09e9c8d85ba6216df, type: 3}
+  m_Name: AudioImport
+  m_EditorClassIdentifier: 
+  enabled: 0
 --- !u!114 &-6260109836083021119
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -87,6 +113,20 @@ MonoBehaviour:
   KHR_materials_sheen: 1
   KHR_materials_pbrSpecularGlossiness: 1
   KHR_materials_emissive_strength: 1
+  KHR_materials_anisotropy: 1
+--- !u!114 &-1980382503642758347
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59cc7d090dc43ef86b454e445bdbf9a, type: 3}
+  m_Name: AudioExport
+  m_EditorClassIdentifier: 
+  enabled: 0
 --- !u!114 &-908607071292620106
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -141,6 +181,7 @@ MonoBehaviour:
   - {fileID: 3883786294631370721}
   - {fileID: 6459569079339063863}
   - {fileID: 8330441088100730240}
+  - {fileID: -6428311421403791176}
   ExportPlugins:
   - {fileID: 4195652022625005878}
   - {fileID: -165190383173568368}
@@ -154,6 +195,8 @@ MonoBehaviour:
   - {fileID: -8395701791825295380}
   - {fileID: -5407235382898005769}
   - {fileID: 1690520593233242578}
+  - {fileID: -1980382503642758347}
+  - {fileID: -8138974778120771031}
   exportNames: 1
   exportFullPath: 0
   EditorExportTransformMode: 0
@@ -184,10 +227,6 @@ MonoBehaviour:
   m_Name: VisualScriptingExportPlugin
   m_EditorClassIdentifier: 
   enabled: 0
-  debugLogSetting:
-    GltfLog: 1
-    ADBEConsole: 1
-    BabylonLog: 0
   cleanUpAndOptimizeExportedGraph: 1
 --- !u!114 &1930503994404220671
 MonoBehaviour:
@@ -275,6 +314,7 @@ MonoBehaviour:
   KHR_materials_clearcoat: 1
   KHR_materials_emissive_strength: 1
   KHR_materials_sheen: 1
+  KHR_materials_anisotropy: 1
 --- !u!114 &4996045898807773902
 MonoBehaviour:
   m_ObjectHideFlags: 3
