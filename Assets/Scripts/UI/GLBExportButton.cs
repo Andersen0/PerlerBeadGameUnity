@@ -23,11 +23,9 @@ public class GLBExportButton : MonoBehaviour
     {
 #if UNITY_EDITOR
         // Find all beads in the scene whose names start with "lowVertixPerler"
-        GameObject[] beads = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None)
-                                   .Where(go => go.name.StartsWith("lowVertixPerler"))
-                                   .ToArray();
+        GameObject[] beads = GameObject.FindGameObjectsWithTag("PerlerTag");  // assign "Bead" tag to all bead objects
 
-        if (beads.Length == 0)
+        if (beads == null || beads.Length == 0)
         {
             Debug.LogError("No beads found in the scene with name starting 'lowVertixPerler'.");
             return;
