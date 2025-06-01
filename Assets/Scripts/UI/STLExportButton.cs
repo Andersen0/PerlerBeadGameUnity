@@ -56,11 +56,11 @@ public class STLExportButton : MonoBehaviour
                         Vector3 v2 = bead.transform.TransformPoint(vertices[triangles[i + 2]]);
                         Vector3 normal = Vector3.Cross(v1 - v0, v2 - v0).normalized;
 
-                        writer.WriteLine($"  facet normal {normal.x} {normal.y} {normal.z}");
+                        writer.WriteLine($"  facet normal {normal.x.ToString(CultureInfo.InvariantCulture)} {normal.y.ToString(CultureInfo.InvariantCulture)} {normal.z.ToString(CultureInfo.InvariantCulture)}");
                         writer.WriteLine("    outer loop");
-                        writer.WriteLine($"      vertex {v0.x} {v0.y} {v0.z}");
-                        writer.WriteLine($"      vertex {v1.x} {v1.y} {v1.z}");
-                        writer.WriteLine($"      vertex {v2.x} {v2.y} {v2.z}");
+                        writer.WriteLine($"      vertex {v0.x.ToString(CultureInfo.InvariantCulture)} {v0.y.ToString(CultureInfo.InvariantCulture)} {v0.z.ToString(CultureInfo.InvariantCulture)}");
+                        writer.WriteLine($"      vertex {v1.x.ToString(CultureInfo.InvariantCulture)} {v1.y.ToString(CultureInfo.InvariantCulture)} {v1.z.ToString(CultureInfo.InvariantCulture)}");
+                        writer.WriteLine($"      vertex {v2.x.ToString(CultureInfo.InvariantCulture)} {v2.y.ToString(CultureInfo.InvariantCulture)} {v2.z.ToString(CultureInfo.InvariantCulture)}");
                         writer.WriteLine("    endloop");
                         writer.WriteLine("  endfacet");
                     }
