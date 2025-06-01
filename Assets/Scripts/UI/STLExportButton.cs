@@ -25,7 +25,7 @@ public class STLExportButton : MonoBehaviour
 
         if (beads == null || beads.Length == 0)
         {
-            Debug.LogError("No beads found with name starting 'lowVertixPerler'.");
+            Debug.LogError("No beads found with tag 'PerlerTag'.");
             return;
         }
 
