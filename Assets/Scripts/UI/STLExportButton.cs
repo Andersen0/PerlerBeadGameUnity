@@ -23,16 +23,17 @@ public class STLExportButton : MonoBehaviour
     void ExportSTLUsingBaseMesh()
     {
 #if UNITY_EDITOR
-        if (baseMeshFilter == null || baseMeshFilter.sharedMesh == null)
+        GameObject[] beads = GameObject.FindGameObjectsWithTag("PerlerTag");
+
+        if (beads == null || beads.Length == 0)
         {
-            Debug.LogError("❌ Base mesh filter is not assigned or empty.");
+            Debug.LogWarning("⚠️ No beads found in the scene with tag 'PerlerTag'. STL export aborted.");
             return;
         }
 
-        GameObject[] beads = GameObject.FindGameObjectsWithTag("PerlerTag");
-        if (beads.Length == 0)
+        if (baseMeshFilter == null || baseMeshFilter.sharedMesh == null)
         {
-            Debug.LogError("❌ No beads found with tag 'PerlerTag'.");
+            Debug.LogError("❌ Base mesh filter is not assigned or empty.");
             return;
         }
 
@@ -72,7 +73,6 @@ public class STLExportButton : MonoBehaviour
                     }
                 }
 
-
                 writer.WriteLine("endsolid UnityExport");
                 Debug.Log($"✅ STL exported with {beads.Length} instances to: {filePath}");
             }
@@ -89,9 +89,7 @@ public class STLExportButton : MonoBehaviour
     private static Vector3 TransformVertex(Vector3 local, Matrix4x4 matrix)
     {
         Vector3 world = matrix.MultiplyPoint3x4(local);
-
-        // STL expects Z-up, Unity is Y-up. In adition we scale with *1000, taking it from m -> mm
-        return new Vector3(world.x, world.z, -world.y)*1000;
+        return new Vector3(world.x, world.z, -world.y) * 1000f; // Convert m → mm
     }
 
     private static string FormatVec(Vector3 v)
