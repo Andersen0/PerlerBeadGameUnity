@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using System.Linq;
 using System.Text;
+using System.Globalization;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,65 +12,70 @@ using UnityEditor;
 public class STLExportButton : MonoBehaviour
 {
     public Button exportButton;
+    public MeshFilter baseMeshFilter; // Assign this in the Inspector (e.g., lowVertixPerler prefab)
 
     void Start()
     {
         if (exportButton != null)
-            exportButton.onClick.AddListener(ExportBeadToSTL);
+            exportButton.onClick.AddListener(ExportSTLUsingBaseMesh);
     }
 
-    void ExportBeadToSTL()
+    void ExportSTLUsingBaseMesh()
     {
 #if UNITY_EDITOR
-        GameObject[] beads = GameObject.FindGameObjectsWithTag("PerlerTag");  // assign "Bead" tag to all bead objects
-
-        if (beads == null || beads.Length == 0)
+        if (baseMeshFilter == null || baseMeshFilter.sharedMesh == null)
         {
-            Debug.LogError("No beads found with tag 'PerlerTag'.");
+            Debug.LogError("❌ Base mesh filter is not assigned or empty.");
             return;
         }
 
-        string filePath = EditorUtility.SaveFilePanel("Save STL File", "", "AllBeads", "stl");
+        GameObject[] beads = GameObject.FindGameObjectsWithTag("PerlerTag");
+        if (beads.Length == 0)
+        {
+            Debug.LogError("❌ No beads found with tag 'PerlerTag'.");
+            return;
+        }
+
+        string filePath = EditorUtility.SaveFilePanel("Save STL File", "", "PerlerExport", "stl");
         if (string.IsNullOrEmpty(filePath)) return;
-        if (Path.GetExtension(filePath).ToLower() != ".stl")
-            filePath += ".stl";
+        if (Path.GetExtension(filePath).ToLower() != ".stl") filePath += ".stl";
 
         try
         {
+            Mesh mesh = baseMeshFilter.sharedMesh;
+            Vector3[] baseVertices = mesh.vertices;
+            int[] baseTriangles = mesh.triangles;
+
             using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.ASCII))
             {
                 writer.WriteLine("solid UnityExport");
 
                 foreach (var bead in beads)
                 {
-                    MeshFilter mf = bead.GetComponent<MeshFilter>();
-                    if (mf == null || mf.sharedMesh == null) continue;
+                    Matrix4x4 matrix = bead.transform.localToWorldMatrix * Matrix4x4.Rotate(Quaternion.Euler(90f, 0f, 0f));
 
-                    Mesh mesh = mf.sharedMesh;
-                    Vector3[] vertices = mesh.vertices;
-                    int[] triangles = mesh.triangles;
-
-                    for (int i = 0; i < triangles.Length; i += 3)
+                    for (int i = 0; i < baseTriangles.Length; i += 3)
                     {
-                        Vector3 v0 = bead.transform.TransformPoint(vertices[triangles[i]]);
-                        Vector3 v1 = bead.transform.TransformPoint(vertices[triangles[i + 1]]);
-                        Vector3 v2 = bead.transform.TransformPoint(vertices[triangles[i + 2]]);
+                        Vector3 v0 = TransformVertex(baseVertices[baseTriangles[i]], matrix);
+                        Vector3 v1 = TransformVertex(baseVertices[baseTriangles[i + 1]], matrix);
+                        Vector3 v2 = TransformVertex(baseVertices[baseTriangles[i + 2]], matrix);
+
                         Vector3 normal = Vector3.Cross(v1 - v0, v2 - v0).normalized;
 
-                        writer.WriteLine($"  facet normal {normal.x.ToString(CultureInfo.InvariantCulture)} {normal.y.ToString(CultureInfo.InvariantCulture)} {normal.z.ToString(CultureInfo.InvariantCulture)}");
+                        writer.WriteLine($"  facet normal {FormatVec(normal)}");
                         writer.WriteLine("    outer loop");
-                        writer.WriteLine($"      vertex {v0.x.ToString(CultureInfo.InvariantCulture)} {v0.y.ToString(CultureInfo.InvariantCulture)} {v0.z.ToString(CultureInfo.InvariantCulture)}");
-                        writer.WriteLine($"      vertex {v1.x.ToString(CultureInfo.InvariantCulture)} {v1.y.ToString(CultureInfo.InvariantCulture)} {v1.z.ToString(CultureInfo.InvariantCulture)}");
-                        writer.WriteLine($"      vertex {v2.x.ToString(CultureInfo.InvariantCulture)} {v2.y.ToString(CultureInfo.InvariantCulture)} {v2.z.ToString(CultureInfo.InvariantCulture)}");
+                        writer.WriteLine($"      vertex {FormatVec(v0)}");
+                        writer.WriteLine($"      vertex {FormatVec(v1)}");
+                        writer.WriteLine($"      vertex {FormatVec(v2)}");
                         writer.WriteLine("    endloop");
                         writer.WriteLine("  endfacet");
                     }
                 }
 
-                writer.WriteLine("endsolid UnityExport");
-            }
 
-            Debug.Log("✅ STL exported to: " + filePath);
+                writer.WriteLine("endsolid UnityExport");
+                Debug.Log($"✅ STL exported with {beads.Length} instances to: {filePath}");
+            }
         }
         catch (System.Exception ex)
         {
@@ -78,5 +84,18 @@ public class STLExportButton : MonoBehaviour
 #else
         Debug.LogWarning("STL export only works in the Unity Editor.");
 #endif
+    }
+
+    private static Vector3 TransformVertex(Vector3 local, Matrix4x4 matrix)
+    {
+        Vector3 world = matrix.MultiplyPoint3x4(local);
+
+        // STL expects Z-up, Unity is Y-up. In adition we scale with *1000, taking it from m -> mm
+        return new Vector3(world.x, world.z, -world.y)*1000;
+    }
+
+    private static string FormatVec(Vector3 v)
+    {
+        return $"{v.x.ToString("G", CultureInfo.InvariantCulture)} {v.y.ToString("G", CultureInfo.InvariantCulture)} {v.z.ToString("G", CultureInfo.InvariantCulture)}";
     }
 }

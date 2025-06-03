@@ -255,6 +255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 168110332}
   - component: {fileID: 168110331}
+  - component: {fileID: 168110333}
   m_Layer: 0
   m_Name: Perler Manager
   m_TagString: Untagged
@@ -290,6 +291,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &168110333
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168110330}
+  m_Mesh: {fileID: 2534964839176971238, guid: 95b49c0692597bf4f801fdcdcb5c1a7d, type: 3}
 --- !u!1 &267376369
 GameObject:
   m_ObjectHideFlags: 0
@@ -2525,6 +2534,8 @@ GameObject:
   - component: {fileID: 1899386514}
   - component: {fileID: 1899386513}
   - component: {fileID: 1899386512}
+  - component: {fileID: 1899386515}
+  - component: {fileID: 1899386516}
   m_Layer: 5
   m_Name: GLTFExportButton
   m_TagString: Untagged
@@ -2633,6 +2644,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899386510}
   m_CullTransparentMesh: 1
+--- !u!114 &1899386515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899386510}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125841b647e9c4a4c84e62bd8a2ab7cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exportButton: {fileID: 1899386512}
+--- !u!114 &1899386516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899386510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627de0182ddb66c43989e5a5b37a3719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exportButton: {fileID: 1899386512}
 --- !u!1 &2064863891
 GameObject:
   m_ObjectHideFlags: 0
@@ -2647,7 +2684,6 @@ GameObject:
   - component: {fileID: 2064863892}
   - component: {fileID: 2064863897}
   - component: {fileID: 2064863896}
-  - component: {fileID: 2064863898}
   - component: {fileID: 2064863899}
   m_Layer: 5
   m_Name: UI
@@ -2797,18 +2833,6 @@ MonoBehaviour:
   sliderPrefab: {fileID: 7477950620096790799, guid: 230b05d9470009240979a7553dcb7070, type: 3}
   colorPreviewPrefab: {fileID: 0}
   defaultFont: {fileID: 0}
---- !u!114 &2064863898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064863891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae1e4cda941f51048aec6581e76999dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2064863899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2816,7 +2840,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064863891}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 125841b647e9c4a4c84e62bd8a2ab7cb, type: 3}
   m_Name: 
