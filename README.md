@@ -48,7 +48,7 @@ This project is a cooperative effort between:
 
 **Export Feature**
 - Pressing the blue export button on the right side of the UI will open up two options for exporting the current project.
-- STL Export, for use with 3D printing and modelling using the mesh file.
+- STL Export, for use with 3D printing and modeling using the mesh file.
 - GLB Export, for sharing purposes. Keeping the material colors chosen for the individual beads.
 - Pressing the blue export button again closes the option buttons.
 - Pressing export without beads in frame logs a warning message, but does not crash the program.
