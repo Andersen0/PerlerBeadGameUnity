@@ -1,4 +1,7 @@
-![b2c0a092-0547-4f2e-a86c-490ffddf612f](https://github.com/user-attachments/assets/1956aae3-d29e-4676-8155-f1f63e0c9252)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1956aae3-d29e-4676-8155-f1f63e0c9252" 
+       width="600" />
+</p>
 
 # 🎨 Perler Bead Designer
 
