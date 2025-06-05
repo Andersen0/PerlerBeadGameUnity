@@ -1,3 +1,5 @@
+![b2c0a092-0547-4f2e-a86c-490ffddf612f](https://github.com/user-attachments/assets/1956aae3-d29e-4676-8155-f1f63e0c9252)
+
 # 🎨 Perler Bead Designer
 
 **Perler Bead Designer** is a digital crafting tool that allows users to design and build their own perler bead creations easily, accessibly, and creatively. The goal is to provide a fun and intuitive experience for people of all ages to experiment with perler art without the mess or materials—just open the app and start designing!
