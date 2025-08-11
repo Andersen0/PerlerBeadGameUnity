@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using System.Linq;  // <-- Add this
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -22,24 +21,18 @@ public class GLBExportButton : MonoBehaviour
     void ExportBeadToGLB()
     {
 #if UNITY_EDITOR
-        // Find all beads in the scene whose names start with "lowVertixPerler"
-        GameObject[] beads = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None)
-                                   .Where(go => go.name.StartsWith("lowVertixPerler"))
-                                   .ToArray();
+        GameObject[] beads = GameObject.FindGameObjectsWithTag("PerlerTag");
 
-        if (beads.Length == 0)
+        if (beads == null || beads.Length == 0)
         {
-            Debug.LogError("No beads found in the scene with name starting 'lowVertixPerler'.");
+            Debug.LogWarning("⚠️ No beads found in the scene with tag 'PerlerTag'. GLB export aborted.");
             return;
         }
 
-        // Allows the user to choose folder path and file name
         string filePath = EditorUtility.SaveFilePanel("Save GLB File", "", "AllBeads", "glb");
         if (string.IsNullOrEmpty(filePath)) return;
-        if (Path.GetExtension(filePath).ToLower() != ".glb")
-            filePath += ".glb";
+        if (Path.GetExtension(filePath).ToLower() != ".glb") filePath += ".glb";
 
-        // Collect all bead transforms
         Transform[] beadTransforms = new Transform[beads.Length];
         for (int i = 0; i < beads.Length; i++)
             beadTransforms[i] = beads[i].transform;
@@ -54,10 +47,10 @@ public class GLBExportButton : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-            Debug.LogError("❌ Export failed: " + ex.Message);
+            Debug.LogError("❌ GLB export failed: " + ex.Message);
         }
 #else
-        Debug.LogWarning("GLTF export only works in the Unity Editor.");
+        Debug.LogWarning("GLB export only works in the Unity Editor.");
 #endif
     }
 }
